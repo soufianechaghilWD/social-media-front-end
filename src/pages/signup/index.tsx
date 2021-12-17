@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import Logo from '../../files/logo.png'
 import '../../styles/signup/index.css'
 import { useNavigate } from 'react-router-dom'
+import requestAPI from '../../requests'
+import Error from '../../comp/Error'
 
 
 const Index = () => {
@@ -11,7 +13,19 @@ const Index = () => {
     const [password, setPassword] = useState('')
     const [passwordConfirmation, setPasswordConfirmation] = useState('')
     const [viewpassword, setViewPassword] = useState(false)
+    const [err, setErr] = useState(null)
     const navigate = useNavigate()
+
+    const signup = () => {
+        console.log('ur URL: ', process.env.REACT_APP_BACK_END_API_URL)
+        requestAPI.post('/register', {username: username, email: email, password: password})
+        .then((res) => {
+            if(res.status === 200){
+                console.log('ur user is: ', res.data)
+            }else setErr(res.data.msg)
+        })
+        .catch(err => setErr(err.response.message))
+    }
 
     return (
         <div className='signup'>
@@ -38,10 +52,13 @@ const Index = () => {
                     <input type="checkbox" checked={viewpassword} onChange={e => setViewPassword(e.target.checked)} />
                     <label style={{marginLeft: "0.8rem"}}>View password</label>
                     <br />
-                    <button>Sign up</button>
+                    <button onClick={signup}>Sign up</button>
                 </div>
                 <p>If you already have an account <span onClick={() => navigate('/signin')}>Log In</span></p>
             </div>
+            {
+                err !== null && <Error data={err} />
+            }
         </div>
     )
 }

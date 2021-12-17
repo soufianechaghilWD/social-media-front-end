@@ -3,6 +3,8 @@ import './App.css';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import Signup from './pages/signup'
 import Signin from "./pages/signin"
+import Home from './pages/home'
+
 function App() {
   return (
     <BrowserRouter>
@@ -10,7 +12,7 @@ function App() {
         <Routes>
           <Route path="/signin" element={<Signin />} ></Route>
           <Route path="/signup" element={<Signup />} ></Route>
-          <Route path="/" element={<h1>Social</h1>} ></Route>
+          <Route path="/" element={<Home />} ></Route>
         </Routes>
       </div>
     </BrowserRouter>
